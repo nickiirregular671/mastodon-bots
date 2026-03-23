@@ -16,6 +16,8 @@ Download the code or clone using git.
 
 See **Setup your fist bot** below...
 
+<img width="1182" height="460" alt="image" src="https://github.com/user-attachments/assets/e34a2773-a8e6-4298-90b3-589ce8bcc9a2" />
+
 ## Features
 
 Multiuser (multibot) Fediverse instance. I recommend to host it on a domain or a subdomain. `index.php` is used to handle all traffic via rewrites.
