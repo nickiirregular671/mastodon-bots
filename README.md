@@ -1,6 +1,8 @@
 # ActivityPub / Mastodon bots
 
-A Mastodon (Activity Pub) bot instance developed in PHP to quickly create and deploy multiple bots. I use the bots to regularly post interesting content (historical photos).
+A Mastodon (Activity Pub) bot instance developed in PHP to **quickly create and deploy multiple bots**. I use the bots to regularly post interesting content (historical photos).
+
+Manual registration at large instances (like Mastodon.social) ws slow: register -> verify -> create app -> add scopes... **This tool helps to deploy bots (new Mastodon accounts / identities) in couple of clicks.**
 
 See it in action: https://bots.ambience.sk/
 
