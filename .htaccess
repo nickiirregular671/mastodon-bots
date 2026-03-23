@@ -1,0 +1,87 @@
+Options -Indexes -MultiViews
+DirectoryIndex index.php
+
+# Protect sensitive files
+<FilesMatch "\.(sqlite|sqlite3|db|sql)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Serve uploads statically (no PHP)
+    RewriteRule ^uploads/ - [L]
+
+    # Static assets
+    RewriteRule ^(favicon\.ico|robots\.txt|sitemap\.xml)$ - [L]
+
+    # /.well-known/webfinger
+    RewriteRule ^\.well-known/webfinger$ index.php?_route=webfinger [L,QSA]
+
+    # /.well-known/nodeinfo
+    RewriteRule ^\.well-known/nodeinfo$ index.php?_route=nodeinfo_discovery [L,QSA]
+
+    # /nodeinfo/2.0
+    RewriteRule ^nodeinfo/2\.0$ index.php?_route=nodeinfo [L,QSA]
+
+    # /inbox (shared inbox)
+    RewriteRule ^inbox$ index.php?_route=shared_inbox [L,QSA]
+
+    # /users/{username}/inbox
+    RewriteRule ^users/([a-zA-Z0-9_-]+)/inbox$ index.php?_route=inbox&username=$1 [L,QSA]
+
+    # /users/{username}/outbox
+    RewriteRule ^users/([a-zA-Z0-9_-]+)/outbox$ index.php?_route=outbox&username=$1 [L,QSA]
+
+    # /users/{username}/followers
+    RewriteRule ^users/([a-zA-Z0-9_-]+)/followers$ index.php?_route=followers&username=$1 [L,QSA]
+
+    # /users/{username}/following
+    RewriteRule ^users/([a-zA-Z0-9_-]+)/following$ index.php?_route=following&username=$1 [L,QSA]
+
+    # /users/{username}/featured_tags
+    RewriteRule ^users/([a-zA-Z0-9_-]+)/featured_tags$ index.php?_route=featured_tags&username=$1 [L,QSA]
+
+    # /users/{username}/statuses/{id}
+    RewriteRule ^users/([a-zA-Z0-9_-]+)/statuses/([a-zA-Z0-9_-]+)$ index.php?_route=status&username=$1&status_id=$2 [L,QSA]
+
+    # /users/{username} - actor endpoint
+    RewriteRule ^users/([a-zA-Z0-9_-]+)$ index.php?_route=actor&username=$1 [L,QSA]
+
+    # /@{username}/statuses/{id} - redirect old URLs to new format
+    RewriteRule ^@([a-zA-Z0-9_-]+)/statuses/([a-zA-Z0-9_-]+)$ /@$1/$2 [R=301,L]
+
+    # /@{username}/{id} - public post page
+    RewriteRule ^@([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)$ index.php?_route=status&username=$1&status_id=$2 [L,QSA]
+
+    # /@{username} - profile page (friendly URL)
+    RewriteRule ^@([a-zA-Z0-9_-]+)$ index.php?_route=profile&username=$1 [L,QSA]
+
+    # /tags/{tag}
+    RewriteRule ^tags/([a-zA-Z0-9_-]+)$ index.php?_route=tag&tag=$1 [L,QSA]
+
+    # /api/*
+    RewriteRule ^api/(.*)$ index.php?_route=api&_api_path=$1 [L,QSA]
+
+    # /media/upload
+    RewriteRule ^media/upload$ index.php?_route=media_upload [L,QSA]
+
+    # /admin/*
+    RewriteRule ^admin/?$ index.php?_route=admin [L]
+    RewriteRule ^admin/(.+)$ index.php?_route=admin&_admin_path=$1 [L,QSA]
+
+    # Homepage
+    RewriteRule ^$ index.php?_route=home [L,QSA]
+
+    # Catch-all (pass unknown paths to PHP for 404)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.+)$ index.php?_route=home [L,QSA]
+</IfModule>
+
+# Deny direct access to lib/ and data/ using rewrite rules
+<IfModule mod_rewrite.c>
+    RewriteRule ^(lib|data)(/|$) - [F,L]
+</IfModule>
