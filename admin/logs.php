@@ -14,7 +14,8 @@ if ($logAction === 'clear' && is_post()) {
 }
 
 $direction = $_GET['direction'] ?? '';
-$logs      = log_get_recent(200, $botId ?: null, $direction);
+$eventType = $_GET['event_type'] ?? '';
+$logs      = log_get_recent(200, $botId ?: null, $direction, $eventType);
 $accounts  = get_all_accounts();
 
 require BASE_PATH . '/templates/admin/logs.php';

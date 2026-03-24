@@ -1,10 +1,10 @@
 <?php
-$pageTitle = 'Bots';
-require BASE_PATH . '/templates/admin/layout.php';
 $showCreate = ($botAction ?? '') === 'create';
+$pageTitle  = $editBot ? 'Edit — @' . $editBot['username'] : 'Bots';
+require BASE_PATH . '/templates/admin/layout.php';
 ?>
 
-<h1>Bots</h1>
+<h1><?= $editBot ? 'Edit — @' . h($editBot['username']) : 'Bots' ?></h1>
 
 <?php if (isset($_GET['created'])): ?><div class="alert alert-success">Bot created successfully.</div><?php endif; ?>
 <?php if (isset($_GET['updated'])): ?><div class="alert alert-success">Bot updated.</div><?php endif; ?>
@@ -13,9 +13,15 @@ $showCreate = ($botAction ?? '') === 'create';
 <?php if (!empty($editError)): ?><div class="alert alert-error"><?= h($editError) ?></div><?php endif; ?>
 
 <?php if ($editBot): ?>
+<div class="section-nav">
+  <a href="<?= h(admin_url('bots')) ?>" class="btn btn-secondary btn-sm">← Bots</a>
+  <span class="nav-current">Edit</span>
+  <a href="<?= h(admin_url('post/' . $editBot['id'])) ?>" class="btn btn-secondary btn-sm">Post</a>
+  <a href="<?= h(admin_url('social/' . $editBot['id'])) ?>" class="btn btn-secondary btn-sm">Social</a>
+  <a href="<?= h(admin_url('move/' . $editBot['id'])) ?>" class="btn btn-secondary btn-sm">Move</a>
+</div>
 <!-- Edit Bot Form -->
 <div class="card">
-  <h2>Edit: @<?= h($editBot['username']) ?></h2>
   <form method="POST" action="<?= h(admin_url('bots/' . $editBot['id'] . '/edit')) ?>"
         enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">

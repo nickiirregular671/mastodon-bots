@@ -32,7 +32,15 @@ if ($postAction === 'create' && is_post()) {
     }
 
     if (empty($content) && empty($mediaIds)) {
-        $postError = 'Post content or media is required.';
+        // Nothing to post — clear any pending draft media and reload
+        $pending = db_all(
+            "SELECT id FROM media_attachments WHERE account_id = ? AND post_id IS NULL",
+            [$account['id']]
+        );
+        foreach ($pending as $m) {
+            delete_media_attachment((int)$m['id'], (int)$account['id']);
+        }
+        redirect(admin_url('post/' . $botId));
     } else {
         $domain  = get_domain();
         $parsed  = autolink_content($content, $domain);
@@ -164,6 +172,21 @@ if ($postAction === 'delete' && $postId && is_post()) {
     }
 
     redirect(admin_url('post/' . $botId . '?deleted=1'));
+}
+
+// Clear draft (delete all unattached pending media)
+if ($postAction === 'clear_draft' && is_post()) {
+    csrf_verify();
+
+    $pending = db_all(
+        "SELECT id FROM media_attachments WHERE account_id = ? AND post_id IS NULL",
+        [$account['id']]
+    );
+    foreach ($pending as $m) {
+        delete_media_attachment((int)$m['id'], (int)$account['id']);
+    }
+
+    redirect(admin_url('post/' . $botId));
 }
 
 // List posts for this bot

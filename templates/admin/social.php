@@ -5,7 +5,11 @@ require BASE_PATH . '/templates/admin/layout.php';
 
 <h1>Social — @<?= h($account['username']) ?></h1>
 <div class="section-nav">
-  <a href="<?= h(admin_url('post/' . $account['id'])) ?>" class="btn btn-secondary btn-sm">← Posts</a>
+  <a href="<?= h(admin_url('bots')) ?>" class="btn btn-secondary btn-sm">← Bots</a>
+  <a href="<?= h(admin_url('bots/' . $account['id'] . '/edit')) ?>" class="btn btn-secondary btn-sm">Edit</a>
+  <a href="<?= h(admin_url('post/' . $account['id'])) ?>" class="btn btn-secondary btn-sm">Post</a>
+  <span class="nav-current">Social</span>
+  <a href="<?= h(admin_url('move/' . $account['id'])) ?>" class="btn btn-secondary btn-sm">Move</a>
 </div>
 
 <?php if (isset($_GET['followed'])): ?><div class="alert alert-success">Follow sent.</div><?php endif; ?>
@@ -24,8 +28,8 @@ require BASE_PATH . '/templates/admin/layout.php';
   <form method="POST" action="<?= h(admin_url('social/' . $account['id'] . '/follow')) ?>">
     <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
     <div class="form-group">
-      <label>Actor URI (e.g. https://mastodon.social/users/alice)</label>
-      <input type="url" name="target_uri" required placeholder="https://...">
+      <label>Handle or Actor URI</label>
+      <input type="text" name="target_uri" required placeholder="@user@instance.example.com">
     </div>
     <button type="submit" class="btn btn-primary">Follow</button>
   </form>
@@ -37,8 +41,8 @@ require BASE_PATH . '/templates/admin/layout.php';
   <form method="POST" action="<?= h(admin_url('social/' . $account['id'] . '/block')) ?>">
     <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
     <div class="form-group">
-      <label>Actor URI</label>
-      <input type="url" name="target_uri" required placeholder="https://...">
+      <label>Handle or Actor URI</label>
+      <input type="text" name="target_uri" required placeholder="@user@instance.example.com">
     </div>
     <button type="submit" class="btn btn-danger">Block</button>
   </form>
@@ -75,6 +79,26 @@ require BASE_PATH . '/templates/admin/layout.php';
   </table>
 </div>
 <?php endif; ?>
+
+<!-- Followers List -->
+<div class="card">
+  <h2>Followers (<?= count($followers) ?>)</h2>
+  <?php if (empty($followers)): ?>
+  <p class="text-muted">No followers yet.</p>
+  <?php else: ?>
+  <table>
+    <thead><tr><th>Actor URI</th><th>Since</th></tr></thead>
+    <tbody>
+    <?php foreach ($followers as $f): ?>
+    <tr>
+      <td class="break-all text-sm"><a href="<?= h($f['follower_uri']) ?>" target="_blank"><?= h($f['follower_uri']) ?></a></td>
+      <td class="text-sm text-muted"><?= h(date('M j, Y', strtotime($f['created_at']))) ?></td>
+    </tr>
+    <?php endforeach; ?>
+    </tbody>
+  </table>
+  <?php endif; ?>
+</div>
 
 <!-- Following List -->
 <div class="card">

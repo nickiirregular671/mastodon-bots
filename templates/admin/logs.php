@@ -4,7 +4,7 @@ $extraMainClass = 'logs-page';
 require BASE_PATH . '/templates/admin/layout.php';
 ?>
 
-<h1>Activity Logs</h1>
+<h1>Activity Logs (<?= count($logs) ?>)</h1>
 
 <?php if (isset($_GET['cleared'])): ?><div class="alert alert-success">Cleared <?= (int)$_GET['cleared'] ?> log entries.</div><?php endif; ?>
 
@@ -29,13 +29,25 @@ require BASE_PATH . '/templates/admin/layout.php';
       <option value="<?= $acc['id'] ?>" <?= $botId == $acc['id'] ? 'selected' : '' ?>>@<?= h($acc['username']) ?></option>
       <?php endforeach; ?>
     </select>
+    <select class="btn btn-secondary logs-filter-select" id="logs-event-filter"
+            onchange="logsRedirect()">
+      <option value="" <?= empty($eventType) ? 'selected' : '' ?>>All event types</option>
+      <?php foreach (['Follow','Accept','Reject','Undo','Create','Update','Delete','Announce','Like','Block','Move'] as $et): ?>
+      <option value="<?= $et ?>" <?= $eventType === $et ? 'selected' : '' ?>><?= $et ?></option>
+      <?php endforeach; ?>
+    </select>
   </div>
   <script>
   function logsRedirect() {
-    var bot = document.getElementById('logs-bot-filter').value;
-    var dir = document.getElementById('logs-direction-filter').value;
-    var base = <?= json_encode(admin_url('logs')) ?>;
-    var url = base + (bot ? '/' + bot : '') + (dir ? '?direction=' + encodeURIComponent(dir) : '');
+    var bot   = document.getElementById('logs-bot-filter').value;
+    var dir   = document.getElementById('logs-direction-filter').value;
+    var event = document.getElementById('logs-event-filter').value;
+    var base  = <?= json_encode(admin_url('logs')) ?>;
+    var url   = base + (bot ? '/' + bot : '');
+    var params = [];
+    if (dir)   params.push('direction=' + encodeURIComponent(dir));
+    if (event) params.push('event_type=' + encodeURIComponent(event));
+    if (params.length) url += '?' + params.join('&');
     window.location.href = url;
   }
   </script>

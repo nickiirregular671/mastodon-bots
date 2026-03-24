@@ -65,6 +65,7 @@ th{font-weight:600;background:#f8f9fa;color:#444}
 
 /* === Utility === */
 .section-nav{margin-bottom:0.75rem}
+.section-nav .nav-current{font-size:.8rem;font-weight:600;color:#555;padding:0.25rem 0.5rem;display:inline-block}
 .mt-top{margin-top:1rem}
 .inline-form{display:inline}
 .grid-2col{display:grid;grid-template-columns:1fr 1fr;gap:1rem}

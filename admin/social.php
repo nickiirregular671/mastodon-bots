@@ -12,6 +12,24 @@ if (!$botId) redirect(admin_url('bots'));
 $account = get_account_by_id($botId);
 if (!$account) redirect(admin_url('bots'));
 
+// Helper: resolve handle or URI to actor URI
+function resolve_target_uri(string $input, array &$errors): string {
+    if (!str_starts_with($input, 'http')) {
+        require_once LIB_PATH . '/autolink.php';
+        $handle = ltrim($input, '@');
+        [$uname, $udom] = array_pad(explode('@', $handle, 2), 2, '');
+        if ($uname && $udom) {
+            $resolved = webfinger_lookup($uname, $udom);
+            if ($resolved) return $resolved;
+            $errors[] = 'Could not resolve handle via WebFinger. Check the handle and try again.';
+        } else {
+            $errors[] = 'Invalid handle format. Use @user@domain or a full actor URI.';
+        }
+        return '';
+    }
+    return $input;
+}
+
 // Follow a remote account
 if ($action === 'follow' && is_post()) {
     csrf_verify();
@@ -21,6 +39,10 @@ if ($action === 'follow' && is_post()) {
     if (empty($targetUri)) {
         $errors[] = 'Target actor URI is required.';
     } else {
+        $targetUri = resolve_target_uri($targetUri, $errors);
+    }
+
+    if (!$errors) {
         // Resolve actor
         $actor = fetch_remote_actor($targetUri);
         if (!$actor) {
@@ -72,8 +94,13 @@ if ($action === 'unfollow' && is_post()) {
 if ($action === 'block' && is_post()) {
     csrf_verify();
     $targetUri = trim($_POST['target_uri'] ?? '');
+    $errors    = [];
 
     if (!empty($targetUri)) {
+        $targetUri = resolve_target_uri($targetUri, $errors);
+    }
+
+    if (!$errors && !empty($targetUri)) {
         db_run(
             "INSERT OR IGNORE INTO blocks (account_id, target_uri) VALUES (?, ?)",
             [$account['id'], $targetUri]
@@ -145,6 +172,7 @@ if ($action === 'reject_follower' && is_post()) {
 }
 
 $following        = db_all("SELECT * FROM following  WHERE account_id = ? ORDER BY created_at DESC", [$account['id']]);
+$followers        = db_all("SELECT * FROM followers  WHERE account_id = ? AND accepted = 1 ORDER BY created_at DESC", [$account['id']]);
 $pendingFollowers = db_all("SELECT * FROM followers  WHERE account_id = ? AND accepted = 0 ORDER BY created_at DESC", [$account['id']]);
 $blocks           = db_all("SELECT * FROM blocks     WHERE account_id = ? ORDER BY created_at DESC", [$account['id']]);
 

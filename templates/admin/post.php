@@ -7,8 +7,10 @@ require BASE_PATH . '/templates/admin/layout.php';
 
 <div class="section-nav">
   <a href="<?= h(admin_url('bots')) ?>" class="btn btn-secondary btn-sm">← Bots</a>
+  <a href="<?= h(admin_url('bots/' . $account['id'] . '/edit')) ?>" class="btn btn-secondary btn-sm">Edit</a>
+  <span class="nav-current">Post</span>
   <a href="<?= h(admin_url('social/' . $account['id'])) ?>" class="btn btn-secondary btn-sm">Social</a>
-  <a href="<?= h(admin_url('followers/' . $account['id'])) ?>" class="btn btn-secondary btn-sm">Followers</a>
+  <a href="<?= h(admin_url('move/' . $account['id'])) ?>" class="btn btn-secondary btn-sm">Move</a>
 </div>
 
 <?php if (isset($_GET['created'])): ?><div class="alert alert-success">Post published!</div><?php endif; ?>
@@ -104,6 +106,13 @@ require BASE_PATH . '/templates/admin/layout.php';
     <div class="flex-row">
       <button type="submit" class="btn btn-primary">Publish Post</button>
       <a href="<?= h(admin_url('post/' . $account['id'])) ?>#upload" class="btn btn-secondary">Upload Media</a>
+      <?php if (!empty($pendingMedia)): ?>
+      <form method="POST" action="<?= h(admin_url('post/' . $account['id'] . '/clear_draft')) ?>"
+            onsubmit="return confirm('Delete all uploaded draft media?')" style="display:inline">
+        <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
+        <button type="submit" class="btn btn-danger">Clear Draft</button>
+      </form>
+      <?php endif; ?>
     </div>
   </form>
 </div>
@@ -111,9 +120,11 @@ require BASE_PATH . '/templates/admin/layout.php';
 <!-- Media Upload -->
 <div class="card" id="upload">
   <h2>Upload Media</h2>
+  <?php if (isset($_GET['upload_error'])): ?><div class="alert alert-error"><?= h($_GET['upload_error']) ?></div><?php endif; ?>
   <form method="POST" action="<?= h(site_url('media/upload')) ?>" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
     <input type="hidden" name="bot_id" value="<?= $account['id'] ?>">
+    <input type="hidden" name="redirect_to" value="<?= h(admin_url('post/' . $account['id']) . '#upload') ?>">
     <div class="form-group">
       <label>File (image, video, audio)</label>
       <input type="file" name="file" accept="image/*,video/mp4,video/webm,audio/mpeg,audio/ogg,audio/wav" required>
@@ -123,7 +134,6 @@ require BASE_PATH . '/templates/admin/layout.php';
       <input type="text" name="alt_text" placeholder="Describe the media…">
     </div>
     <button type="submit" class="btn btn-primary">Upload</button>
-    <small class="upload-help">After uploading, return here to attach to a post.</small>
   </form>
 </div>
 <?php endif; ?>

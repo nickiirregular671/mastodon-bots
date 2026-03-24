@@ -41,12 +41,22 @@ if (empty($_FILES['file'])) {
 
 $altText = trim($_POST['alt_text'] ?? '');
 
+$redirectTo = trim($_POST['redirect_to'] ?? '');
+
 try {
     $id  = handle_media_upload($_FILES['file'], $botId, $altText);
     $att = db_get("SELECT * FROM media_attachments WHERE id = ?", [$id]);
+    if ($redirectTo) {
+        header('Location: ' . $redirectTo);
+        exit;
+    }
     header('Content-Type: application/json');
     echo json_encode(['id' => $id, 'url' => $att['file_url'], 'mime_type' => $att['mime_type'], 'alt_text' => $att['alt_text']]);
 } catch (RuntimeException $e) {
+    if ($redirectTo) {
+        header('Location: ' . $redirectTo . '?upload_error=' . rawurlencode($e->getMessage()));
+        exit;
+    }
     http_response_code(422);
     header('Content-Type: application/json');
     echo json_encode(['error' => $e->getMessage()]);

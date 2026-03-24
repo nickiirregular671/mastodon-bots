@@ -68,7 +68,7 @@ function log_clear_all(?int $accountId = null): int {
     return $stmt->rowCount();
 }
 
-function log_get_recent(int $limit = 100, ?int $accountId = null, string $direction = ''): array {
+function log_get_recent(int $limit = 100, ?int $accountId = null, string $direction = '', string $eventType = ''): array {
     $where  = [];
     $params = [];
 
@@ -79,6 +79,10 @@ function log_get_recent(int $limit = 100, ?int $accountId = null, string $direct
     if (!empty($direction)) {
         $where[]  = "direction = ?";
         $params[] = $direction;
+    }
+    if (!empty($eventType)) {
+        $where[]  = "activity_type = ?";
+        $params[] = $eventType;
     }
 
     $sql = "SELECT l.*, a.username

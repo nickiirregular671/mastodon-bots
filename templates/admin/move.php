@@ -5,7 +5,11 @@ require BASE_PATH . '/templates/admin/layout.php';
 
 <h1>Account Move — @<?= h($account['username']) ?></h1>
 <div class="section-nav">
-  <a href="<?= h(admin_url('bots/' . $account['id'] . '/edit')) ?>" class="btn btn-secondary btn-sm">← Bot Settings</a>
+  <a href="<?= h(admin_url('bots')) ?>" class="btn btn-secondary btn-sm">← Bots</a>
+  <a href="<?= h(admin_url('bots/' . $account['id'] . '/edit')) ?>" class="btn btn-secondary btn-sm">Edit</a>
+  <a href="<?= h(admin_url('post/' . $account['id'])) ?>" class="btn btn-secondary btn-sm">Post</a>
+  <a href="<?= h(admin_url('social/' . $account['id'])) ?>" class="btn btn-secondary btn-sm">Social</a>
+  <span class="nav-current">Move</span>
 </div>
 
 <?php if (!empty($success)): ?><div class="alert alert-success"><?= h($success) ?></div><?php endif; ?>
