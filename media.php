@@ -41,7 +41,10 @@ if (empty($_FILES['file'])) {
 
 $altText = trim($_POST['alt_text'] ?? '');
 
-$redirectTo = trim($_POST['redirect_to'] ?? '');
+// Only allow same-site redirects (must start with /)
+$redirectRaw = trim($_POST['redirect_to'] ?? '');
+$redirectTo  = (str_starts_with($redirectRaw, '/') && !str_starts_with($redirectRaw, '//'))
+    ? $redirectRaw : '';
 
 try {
     $id  = handle_media_upload($_FILES['file'], $botId, $altText);
