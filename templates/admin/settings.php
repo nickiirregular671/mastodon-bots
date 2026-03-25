@@ -33,6 +33,12 @@ require BASE_PATH . '/templates/admin/layout.php';
       <input type="number" name="media_max_mb" value="<?= h((string)$settings['media_max_mb']) ?>" min="1" max="500">
     </div>
 
+    <div class="form-group">
+      <label>Webhook URL (leave blank to disable)</label>
+      <input type="url" name="webhook_url" value="<?= h($settings['webhook_url']) ?>" placeholder="https://example.com/webhook">
+      <small class="form-hint">Receives a POST request (JSON) when someone replies to a bot post.</small>
+    </div>
+
     <hr class="hr-divider">
     <h2>Change Admin Password</h2>
     <div class="form-group">

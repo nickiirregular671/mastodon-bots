@@ -238,6 +238,23 @@ function handle_create(array $account, array $actor, array $activity, string $bo
     }
 
     log_activity((int)$account['id'], 'in', 'Create', $body, $actorUri, '', 'received');
+
+    if (!empty($inReplyTo)) {
+        $attachments = [];
+        foreach (($obj['attachment'] ?? []) as $att) {
+            $attUrl = is_array($att) ? ($att['url'] ?? '') : (string)$att;
+            if ($attUrl !== '') $attachments[] = $attUrl;
+        }
+        fire_webhook('reply', [
+            'bot'             => $account['username'],
+            'actor_uri'       => $actorUri,
+            'reply_url'       => $obj['id'] ?? '',
+            'in_reply_to_url' => $inReplyTo,
+            'content'         => $obj['content'] ?? '',
+            'summary'         => $obj['summary'] ?? '',
+            'attachments'     => $attachments,
+        ]);
+    }
 }
 
 function handle_update_activity(array $_account, array $_actor, array $_activity): void {

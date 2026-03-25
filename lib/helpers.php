@@ -167,3 +167,26 @@ function site_url(string $path = ''): string {
     }
     return base_url() . ($path !== '' ? '/' . ltrim($path, '/') : '');
 }
+
+function fire_webhook(string $event, array $payload): void {
+    $url = db_setting('webhook_url', '');
+    if (empty($url)) return;
+
+    $payload['event']     = $event;
+    $payload['timestamp'] = gmdate('Y-m-d\TH:i:s\Z');
+
+    $json = json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => $json,
+        CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 5,
+        CURLOPT_CONNECTTIMEOUT => 3,
+        CURLOPT_FOLLOWLOCATION => true,
+    ]);
+    curl_exec($ch);
+    curl_close($ch);
+}
