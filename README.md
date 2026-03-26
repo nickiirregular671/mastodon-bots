@@ -18,7 +18,7 @@ Download the code or `git clone https://github.com/nekromoff/mastodon-bots`.
 
 See **Setup your first bot** below...
 
-<img width="1182" height="460" alt="image" src="https://github.com/user-attachments/assets/e34a2773-a8e6-4298-90b3-589ce8bcc9a2" />
+<img width="1359" height="655" alt="image" src="https://github.com/user-attachments/assets/ab85d631-febd-48a6-93b8-db7c2e640fff" />
 
 ## Features
 
