@@ -6,17 +6,19 @@ Manual registration at large instances (like Mastodon.social) was slow: register
 
 See it in action: https://bots.ambience.sk/
 
+## Advantages
+
+- **Pure PHP**, no external dependencies.
+- **Apache server** needed because of **.htaccess rewrite rules**. But these could be easily converted to **NGINX**.
+- **SQLite** used as a database for low friction setup (database = single file).
+
 ## Installation
 
-Download the code or `git clone https://github.com/nekromoff/mastodon-bots`.
-
-**Pure PHP**, no external dependencies.
-
-**Apache server needed** because of **.htaccess rewrite rules**. But these could be easily converted to NGINX.
-
-**SQLite** used as a database for low friction setup (database = single file).
-
-See **Setup your first bot** below...
+0. Setup a domain/subdomain with SSL certificate.
+1. Download the code or `git clone https://github.com/nekromoff/mastodon-bots` (to the root of domain/subdomain).
+2. Open your instance at `example.com/admin/` and set it up including admin password.
+3. Log in using your admin password.
+4. See **Setup your first bot** below...
 
 <img width="1359" height="655" alt="image" src="https://github.com/user-attachments/assets/ab85d631-febd-48a6-93b8-db7c2e640fff" />
 
@@ -34,13 +36,12 @@ Automatically generated based on the bots and their activity. Fully indexable by
 
 - **Full administration panel** - create and manage your bots (multiple bots per instance)
 - **Login:** single admin user - authenticated via password only
-- **Dashboard** - quick overview of bot activity and their stats
-- **Manage bots**
-    - create
-    - edit
+- **Bots** - quick overview of bot activity and their stats
+    - create a bot
+    - edit a bot
     - post as a bot
     - social features - follow or block
-    - move - migration from (_alsoKnownAs_) and to (_movedTo_) an instance
+    - move - migration features - move from (_alsoKnownAs_) or to (_movedTo_) an instance
 - **Logs** - log of all relevant events (incoming and outgoing) for all bots
 - **Settings** - instance setup, log retention, media limits
 
@@ -50,7 +51,7 @@ Very **simple API** to communicate with your bots.
 
 #### Supported features
 - Create a post
-- Upload media
+- Upload some media
 - Post with media (use ID from upload response)
 - Edit a post (but you can also do that manually via Admin)
 - Delete a post (but you can also do that manually via Admin)
@@ -73,7 +74,7 @@ Very **simple API** to communicate with your bots.
 > Yes, no dependencies mean no need for `composer`. SQLite database is just a file in `data/` folder, so no need to set up a separate database.
 
 ### Can I run this on a subdomain?
-> Yes, definitely. Just setup SSL certificate and upload this code and you are good to go.
+> Yes, definitely. Just setup an SSL certificate and upload this code and you are good to go.
 
 ### How quickly can I create a bot?
 > Once you are done with a first time setup, you can create a bot in about 20 seconds. You will need some more time to edit bio, upload profile image etc.
@@ -81,7 +82,7 @@ Very **simple API** to communicate with your bots.
 ![output](https://github.com/user-attachments/assets/ec158567-35bd-43f7-aa04-6335bfa1ebf6)
 
 ### Can I run multiple bots on the same instance?
-> Yes, I built it to do just right that!
+> Yes, I built it to do just that!
 
 ### How do I post via API?
 > API requests authenticate using bot username and password. You can use a custom script to post any content to Mastodon (ActivityPub). The API is very simple. 
@@ -95,7 +96,7 @@ curl -u botname:botpassword \
 ```
 
 ### Can I manually create posts?
-> Yes, there is admin UI to manually create, edit and delete posts.
+> Yes, there is an admin UI to manually create, edit and delete posts.
 
 ### Can I use this as an instance for users (e.g. not bots)?
 > Yes, although I wouldn't recommend it. There is no way for users (other than admin) to log in. All users would share common admin interface with a single password.
