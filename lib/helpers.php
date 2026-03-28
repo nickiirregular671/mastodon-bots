@@ -168,6 +168,15 @@ function site_url(string $path = ''): string {
     return base_url() . ($path !== '' ? '/' . ltrim($path, '/') : '');
 }
 
+function meta_description(string $text, int $limit = 155): string {
+    $text = html_entity_decode(strip_tags($text), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $text = preg_replace('/\s+/', ' ', trim($text));
+    if (mb_strlen($text) <= $limit) return $text;
+    $cut = mb_substr($text, 0, $limit + 1);
+    $pos = mb_strrpos(mb_substr($cut, 0, $limit), ' ');
+    return rtrim(mb_substr($text, 0, $pos !== false ? $pos : $limit)) . '…';
+}
+
 function fire_webhook(string $event, array $payload): void {
     $url = db_setting('webhook_url', '');
     if (empty($url)) return;

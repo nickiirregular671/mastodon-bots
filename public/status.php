@@ -51,7 +51,8 @@ $post['username']    = $account['username'];
 $post['display_name'] = $account['display_name'];
 $post['avatar_path'] = $account['avatar_path'];
 
-$pageTitle = ($account['display_name'] ?: $account['username']) . ': ' . mb_substr(strip_tags($post['content_html']), 0, 80);
+$pageTitle = ($account['display_name'] ?: $account['username']) . ': ' . mb_substr(html_entity_decode(strip_tags($post['content_html']), ENT_QUOTES | ENT_HTML5, 'UTF-8'), 0, 80);
+$metaDesc  = meta_description($post['content_html']);
 require BASE_PATH . '/templates/layout.php';
 
 echo '<div class="back-nav"><a href="' . h(profile_url($username)) . '" class="btn btn-secondary btn-sm">← Back to profile</a></div>';

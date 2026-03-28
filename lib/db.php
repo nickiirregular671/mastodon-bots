@@ -114,5 +114,10 @@ function get_account_by_id(int $id): ?array {
 }
 
 function get_all_accounts(): array {
-    return db_all("SELECT * FROM accounts ORDER BY username ASC");
+    return db_all(
+        "SELECT a.*,
+                (SELECT COUNT(*) FROM followers f WHERE f.account_id = a.id AND f.accepted = 1) AS follower_count
+         FROM accounts a
+         ORDER BY follower_count DESC, a.username ASC"
+    );
 }

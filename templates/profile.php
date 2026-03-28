@@ -14,6 +14,22 @@ if (!empty($account['fediverse_creator'])) {
     $headTags .= '<meta name="fediverse:creator" content="' . h($account['fediverse_creator']) . '">' . "\n";
 }
 
+if (!empty($account['bio'])) {
+    $metaDesc = meta_description($account['bio']);
+} else {
+    // Fall back to top hashtags used in posts
+    $_topTags = db_all(
+        "SELECT h.tag, COUNT(*) AS c FROM hashtags h
+         JOIN posts p ON p.id = h.post_id
+         WHERE p.account_id = ? AND p.deleted_at IS NULL
+         GROUP BY h.tag ORDER BY c DESC LIMIT 10",
+        [$account['id']]
+    );
+    if (!empty($_topTags)) {
+        $metaDesc = meta_description('Posts about ' . implode(', ', array_map(fn($r) => '#' . $r['tag'], $_topTags)) . '.');
+    }
+}
+
 require BASE_PATH . '/templates/layout.php';
 ?>
 

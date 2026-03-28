@@ -1,5 +1,22 @@
 <?php
-$pageTitle = 'ActivityPub Bots — ' . get_domain();
+$pageTitle = get_domain();
+
+$_botCount = count($accounts);
+if ($_botCount > 0) {
+    $_base  = $_botCount === 1
+        ? '1 ActivityPub bot on ' . get_domain() . ': '
+        : $_botCount . ' ActivityPub bots on ' . get_domain() . ': ';
+    $_names = [];
+    foreach ($accounts as $_a) {
+        $_name = $_a['display_name'] ?: $_a['username'];
+        $_candidate = $_base . implode(', ', array_merge($_names, [$_name]));
+        if (mb_strlen($_candidate) > 155) break;
+        $_names[] = $_name;
+    }
+    $metaDesc = $_base . implode(', ', $_names);
+    if (count($_names) < $_botCount) $metaDesc .= '…';
+}
+
 require BASE_PATH . '/templates/layout.php';
 ?>
 
@@ -43,7 +60,7 @@ require BASE_PATH . '/templates/layout.php';
       </div>
       <?php endif; ?>
       <div>
-        <div class="bot-name"><?= h($acc['display_name'] ?: $acc['username']) ?></div>
+        <h2 class="bot-name"><?= h($acc['display_name'] ?: $acc['username']) ?></h2>
         <div class="bot-handle">@<?= h($acc['username']) ?>@<?= h($domain) ?></div>
         <div class="bot-stats"><?= $postCount ?> posts · <?= $followerCount ?> followers</div>
       </div>

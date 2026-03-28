@@ -43,6 +43,6 @@ foreach ($posts as &$post) {
 }
 unset($post);
 
-$pageTitle  = '#' . h($tag);
+$pageTitle  = '#' . $tag;
 $robotsMeta = 'noindex,follow';
 require BASE_PATH . '/templates/tag.php';

@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="<?= isset($robotsMeta) ? h($robotsMeta) : 'index,follow' ?>">
-<title><?= isset($pageTitle) ? h($pageTitle) : 'ActivityPub Bots' ?></title>
+<?php if (!empty($metaDesc)): ?><meta name="description" content="<?= htmlspecialchars($metaDesc, ENT_COMPAT | ENT_HTML5, 'UTF-8') ?>"><?php endif; ?>
+<title><?= isset($pageTitle) ? h($pageTitle) : h(get_domain()) ?></title>
 <link rel="apple-touch-icon" sizes="180x180" href="<?= h(site_url('public/favicon/apple-touch-icon.png')) ?>">
 <link rel="icon" type="image/png" sizes="32x32" href="<?= h(site_url('public/favicon/favicon-32x32.png')) ?>">
 <link rel="icon" type="image/png" sizes="16x16" href="<?= h(site_url('public/favicon/favicon-16x16.png')) ?>">
@@ -15,7 +16,7 @@
 <body>
 <header>
   <div class="container">
-    <p class="site-name"><a href="<?= h(base_url()) ?>">ActivityPub Bots</a></p>
+    <p class="site-name"><a href="<?= h(base_url()) ?>"><?= h(get_domain()) ?></a></p>
     <nav>
       <a href="<?= h(base_url()) ?>">Home</a>
       <?php foreach (get_all_accounts() as $_navBot): ?>

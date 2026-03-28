@@ -124,7 +124,17 @@ if ($botAction === 'edit' && $botId && is_post()) {
 // Delete bot
 if ($botAction === 'delete' && $botId && is_post()) {
     csrf_verify();
-    db_run("DELETE FROM accounts WHERE id = ?", [$botId]);
+    $delBot = get_account_by_id($botId);
+    if ($delBot) {
+        db_run("DELETE FROM accounts WHERE id = ?", [$botId]);
+        foreach (['avatars', 'headers'] as $_dir) {
+            $_path = BASE_PATH . '/uploads/' . $_dir . '/' . $delBot['username'];
+            if (is_dir($_path)) {
+                array_map('unlink', glob($_path . '/*') ?: []);
+                rmdir($_path);
+            }
+        }
+    }
     redirect(admin_url('?deleted=1'));
 }
 

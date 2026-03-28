@@ -2,7 +2,7 @@
 require BASE_PATH . '/templates/layout.php';
 ?>
 
-<h1 class="tag-title"><?= $pageTitle ?></h1>
+<h1 class="tag-title"><?= h($pageTitle) ?></h1>
 
 <?php if (empty($posts)): ?>
 <div class="card empty-state">No posts with this hashtag.</div>
